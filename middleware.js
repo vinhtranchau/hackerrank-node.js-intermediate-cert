@@ -7,7 +7,8 @@ module.exports = (scope) => (req, res, next) => {
     const rolesScopesMappingJson = fs.readFileSync(ROLES_FILE, 'utf-8').trim();
     const rolesScopesMapping = JSON.parse(rolesScopesMappingJson);
 
-    const userScopes = rolesScopesMapping.find(roleScope => roleScope.role === userRole)?.scopes;
+    const roleScope = rolesScopesMapping.find(roleScope => roleScope.role === userRole);
+    const userScopes = roleScope ? roleScope.scopes : undefined;
     
     if (!userScopes) {
         return res.status(403).send('Access denied: Invalid role');
